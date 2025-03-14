@@ -1,14 +1,24 @@
 //import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import './App.css';
+import Gpu from './components/gpu.jsx';
+import { useState } from "react";
 
 function App() {
+
+    const [selectedGpu, setSelectedGpu] = useState(null);
 
     return (
         <Router>
         <div className="container text-center mt-5">
             <h1>PC Builder</h1>
             <p>Select a component category to start building your PC.</p>
+
+                {selectedGpu && (
+                    <div className="alert alert-info">
+                        GPU: <strong>{selectedGpu.name}</strong> (£{selectedGpu.price.toFixed(2)})
+                    </div>
+                )}
 
             <div className="table-responsive">
                 <table className="table table-bordered mt-3">
@@ -34,8 +44,8 @@ function App() {
             
 
             <Routes>
-                <Route path="/cpu" element={<h2>CPU Page</h2>} />
-                <Route path="/gpu" element={<h2>GPU Page</h2>} />
+                    <Route path="/cpu" element={<h2>CPU Page</h2>} />
+                    <Route path="/gpu" element={<Gpu setSelectedGpu={setSelectedGpu} />} />
                 <Route path="/ram" element={<h2>RAM Page</h2>} />
                 <Route path="/motherboard" element={<h2>Motherboard Page</h2>} />
                 <Route path="/storage" element={<h2>Storage Page</h2>} />
