@@ -1,11 +1,33 @@
-
+import { useEffect, useState } from "react";
 
 function Gpu({ setSelectedGpu }) {
 
-    const gpuList = [
-        { name: "Geforce RTX 4060", price: 284.99 },
-        { name: "Geforce RTX 4080", price: 1650.00 }
-    ];
+    const [gpus, setGpus] = useState([]);
+
+    useEffect(() => {
+        getGpus();
+    }, []);
+
+    const getGpus = async () => {
+        try {
+            const response = await fetch("https://localhost:7094/api/gpus", {
+                method: "GET"
+            });
+
+            if (response.ok) {
+                const jsonResponse = await response.json();
+                setGpus(jsonResponse || []);
+            }
+            else {
+                setGpus([]);
+            }
+
+        }
+        catch (error) {
+            console.error("Error retrieving GPU data: ", error);
+            setGpus([]);
+        }
+    }
 
 
     const handleSelect = (gpu) => {
@@ -17,10 +39,8 @@ function Gpu({ setSelectedGpu }) {
         <div>
             <h2>Select a GPU component</h2>
 
-            {/* Putting mock table data here for how it might be displayed when back end database is ready*/}
-
             <div className="table-responsive">
-                <table className="table table-boredered mt-3">
+                <table className="table table-bordered mt-3">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -28,8 +48,8 @@ function Gpu({ setSelectedGpu }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {gpuList.map((gpu, index) => (
-                            <tr key={index}>
+                        {gpus.map((gpu, index) => (
+                            <tr key={gpu.Id}>
                                 <td>{gpu.name}</td>
                                 <td>£{gpu.price.toFixed(2)}</td>
                                 <td>

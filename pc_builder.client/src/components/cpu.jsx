@@ -1,11 +1,33 @@
+import {useState, useEffect} from "react";
+
 function Cpu({ setSelectedCpu }) {
 
-    const cpuList = [
-        { name: "Intel i9 ", price: 650.99},
-        { name: "Ryzen 9x3D", price: 550.99 }
-    ];
+    const [cpus, setCpus] = useState([]);
 
+    useEffect(() => {
+        getCpus([]);
+    }, []);
 
+    const getCpus = async () => {
+        try {
+            const response = await fetch("https://localhost:7094/api/cpus", {
+                method: "GET"
+            });
+
+            if (response.ok) {
+                const jsonResponse = await response.json();
+                setCpus(jsonResponse || []);
+            }
+            else {
+                setCpus([]);
+            }
+        }
+        catch (error) {
+            console.error("Error retrieving CPU data: ", error);
+            setCpus([]);
+        }
+    }
+    
     const handleSelect = (cpu) => {
         setSelectedCpu(cpu);
         console.log("Selected GPU:", cpu);
@@ -15,10 +37,8 @@ function Cpu({ setSelectedCpu }) {
         <div>
             <h2>Select a CPU component</h2>
 
-            {/* Putting mock table data here for how it might be displayed when back end database is ready*/}
-
             <div className="table-responsive">
-                <table className="table table-boredered mt-3">
+                <table className="table table-bordered mt-3">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -26,8 +46,8 @@ function Cpu({ setSelectedCpu }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {cpuList.map((cpu, index) => (
-                            <tr key={index}>
+                        {cpus.map((cpu, index) => (
+                            <tr key={cpu.Id}>
                                 <td>{cpu.name}</td>
                                 <td>£{cpu.price.toFixed(2)}</td>
                                 <td>

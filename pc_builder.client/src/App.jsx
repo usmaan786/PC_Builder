@@ -28,6 +28,12 @@ function App() {
                     </div>
                 )}
 
+                {(selectedCpu || selectedGpu) && (
+                    <div className="alert alert-info">
+                        Total: <strong>£{((selectedCpu?.price ?? 0) + (selectedGpu?.price ?? 0)).toFixed(2)}</strong>
+                    </div>
+                )}
+
             <div className="table-responsive">
                 <table className="table table-bordered mt-3">
                     <tbody>
