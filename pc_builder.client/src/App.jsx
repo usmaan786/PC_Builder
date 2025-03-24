@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import './App.css';
 import Gpu from './components/gpu.jsx';
 import Cpu from './components/cpu.jsx';
+import Ram from './components/ram.jsx';
 import { useState } from "react";
 
 function App() {
 
     const [selectedGpu, setSelectedGpu] = useState(null);
     const [selectedCpu, setSelectedCpu] = useState(null);
+    const [selectedRam, setSelectedRam] = useState(null);
 
     return (
         <Router>
@@ -28,9 +30,15 @@ function App() {
                     </div>
                 )}
 
-                {(selectedCpu || selectedGpu) && (
+                {selectedRam && (
                     <div className="alert alert-info">
-                        Total: <strong>£{((selectedCpu?.price ?? 0) + (selectedGpu?.price ?? 0)).toFixed(2)}</strong>
+                        RAM: <strong>{selectedRam.name}</strong>(£{selectedRam.price.toFixed(2)})
+                    </div>
+                )}
+
+                {(selectedCpu || selectedGpu || selectedRam) && (
+                    <div className="alert alert-info">
+                        Total: <strong>£{((selectedCpu?.price ?? 0) + (selectedGpu?.price ?? 0) + (selectedRam?.price ?? 0))}</strong>
                     </div>
                 )}
 
@@ -60,7 +68,7 @@ function App() {
                 <Routes>
                     <Route path="/cpu" element={<Cpu setSelectedCpu={setSelectedCpu} />} />
                     <Route path="/gpu" element={<Gpu setSelectedGpu={setSelectedGpu} />} />
-                <Route path="/ram" element={<h2>RAM Page</h2>} />
+                    <Route path="/ram" element={<Ram setSelectedRam={setSelectedRam} />} />
                 <Route path="/motherboard" element={<h2>Motherboard Page</h2>} />
                 <Route path="/storage" element={<h2>Storage Page</h2>} />
                 <Route path="/psu" element={<h2>Power Supply Page</h2>} />
