@@ -11,6 +11,8 @@ namespace PC_Builder.Server.Data
         public DbSet<Gpu> Gpus { get; set; }
         public DbSet<Ram> Ram { get; set; }
 
+        public DbSet<Motherboard> Motherboards { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

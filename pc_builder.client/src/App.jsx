@@ -4,6 +4,7 @@ import './App.css';
 import Gpu from './components/gpu.jsx';
 import Cpu from './components/cpu.jsx';
 import Ram from './components/ram.jsx';
+import Motherboard from './components/motherboard.jsx'
 import { useState } from "react";
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
     const [selectedGpu, setSelectedGpu] = useState(null);
     const [selectedCpu, setSelectedCpu] = useState(null);
     const [selectedRam, setSelectedRam] = useState(null);
+    const [selectedMotherboard, setSelectedMotherboard] = useState(null);
 
     return (
         <Router>
@@ -36,9 +38,15 @@ function App() {
                     </div>
                 )}
 
-                {(selectedCpu || selectedGpu || selectedRam) && (
+                {selectedMotherboard && (
                     <div className="alert alert-info">
-                        Total: <strong>£{((selectedCpu?.price ?? 0) + (selectedGpu?.price ?? 0) + (selectedRam?.price ?? 0))}</strong>
+                        Motherboard: <strong>{selectedMotherboard.name}</strong>(£{selectedMotherboard.price.toFixed(2)})
+                    </div>
+                )}
+
+                {(selectedCpu || selectedGpu || selectedRam || selectedMotherboard) && (
+                    <div className="alert alert-info">
+                        Total: <strong>£{((selectedCpu?.price ?? 0) + (selectedGpu?.price ?? 0) + (selectedRam?.price ?? 0) + (selectedMotherboard?.price ?? 0))}</strong>
                     </div>
                 )}
 
@@ -69,7 +77,7 @@ function App() {
                     <Route path="/cpu" element={<Cpu setSelectedCpu={setSelectedCpu} />} />
                     <Route path="/gpu" element={<Gpu setSelectedGpu={setSelectedGpu} />} />
                     <Route path="/ram" element={<Ram setSelectedRam={setSelectedRam} />} />
-                <Route path="/motherboard" element={<h2>Motherboard Page</h2>} />
+                    <Route path="/motherboard" element={<Motherboard setSelectedMotherboard={setSelectedMotherboard} />} />
                 <Route path="/storage" element={<h2>Storage Page</h2>} />
                 <Route path="/psu" element={<h2>Power Supply Page</h2>} />
                 <Route path="/case" element={<h2>Case Page</h2>} />
